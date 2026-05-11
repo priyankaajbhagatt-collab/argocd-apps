@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: test-codepipeline-v1-mex
+  namespace: argocd
+  labels:
+    service: test-codepipeline-v1
+    market: mex
+    group: commerce-orderas
+    managed-by: backstage-scaffolder
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/priyankaajbhagatt-collab/test-codepipeline-v1.git
+    targetRevision: main
+    path: deploy/overlays/mex
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: test-codepipeline-v1-mex
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    retry:
+      limit: 3
+      backoff:
+        duration: 30s
+        factor: 2
+        maxDuration: 5m
