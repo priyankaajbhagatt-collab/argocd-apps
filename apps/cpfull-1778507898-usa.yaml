@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cpfull-1778507898-usa
+  namespace: argocd
+  labels:
+    service: cpfull-1778507898
+    market: usa
+    group: devex-scaffolder
+    managed-by: backstage-scaffolder
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/priyankaajbhagatt-collab/cpfull-1778507898.git
+    targetRevision: main
+    path: deploy/overlays/usa
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cpfull-1778507898-usa
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    retry:
+      limit: 3
+      backoff:
+        duration: 30s
+        factor: 2
+        maxDuration: 5m
