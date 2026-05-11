@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: test-p-service-can
+  namespace: argocd
+  labels:
+    service: test-p-service
+    market: can
+    group: commerce-checkout
+    managed-by: backstage-scaffolder
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/priyankaajbhagatt-collab/test-p-service.git
+    targetRevision: main
+    path: deploy/overlays/can
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: test-p-service-can
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    retry:
+      limit: 3
+      backoff:
+        duration: 30s
+        factor: 2
+        maxDuration: 5m
