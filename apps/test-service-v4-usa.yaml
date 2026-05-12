@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: test-service-v4-usa
+  namespace: argocd
+  labels:
+    service: test-service-v4
+    market: usa
+    group: commerce-orderas
+    managed-by: backstage-scaffolder
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/priyankaajbhagatt-collab/test-service-v4.git
+    targetRevision: main
+    path: deploy/overlays/usa
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: test-service-v4-usa
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    retry:
+      limit: 3
+      backoff:
+        duration: 30s
+        factor: 2
+        maxDuration: 5m
