@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: test-insights-api-finalv3-vnm
+  namespace: argocd
+  labels:
+    service: test-insights-api-finalv3
+    market: vnm
+    group: commerce-orderas
+    managed-by: backstage-scaffolder
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/priyankaajbhagatt-collab/test-insights-api-finalv3.git
+    targetRevision: main
+    path: deploy/overlays/vnm
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: test-insights-api-finalv3-vnm
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    retry:
+      limit: 3
+      backoff:
+        duration: 30s
+        factor: 2
+        maxDuration: 5m
