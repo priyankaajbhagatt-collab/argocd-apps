@@ -1,0 +1,40 @@
+# Demo placeholder Deployment — image is overridden per env by the
+# overlay's `images:` block (which the service's deployspec.yml in turn
+# rewrites via `argocd app set --kustomize-image` once a real image
+# exists in ECR).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: commerce-cart-app-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: commerce-cart-app-service
+  template:
+    metadata:
+      labels:
+        app: commerce-cart-app-service
+    spec:
+      containers:
+        - name: commerce-cart-app-service
+          image: public.ecr.aws/docker/library/nginx:alpine
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
