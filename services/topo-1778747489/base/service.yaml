@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: topo-1778747489
+spec:
+  type: ClusterIP
+  selector:
+    app: topo-1778747489
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
