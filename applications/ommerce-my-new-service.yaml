@@ -1,0 +1,124 @@
+# ArgoCD Applications for ommerce-my-new-service — one per env × region.
+#
+# Generated at scaffold time. This file is opened as a PR against the GitOps
+# repo (priyankaajbhagatt-collab/argocd-apps) — the parent ApplicationSet in ArgoCD watches
+# that path and creates child Applications on merge.
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ommerce-my-new-service-dev-us-east-1
+  namespace: argocd
+  labels:
+    service: ommerce-my-new-service
+    product: ommerce-my-new-service
+    env: dev
+    region: us-east-1
+    managed-by: backstage-scaffolder
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/priyankaajbhagatt-collab/argocd-apps.git
+    targetRevision: HEAD
+    path: services/ommerce-my-new-service/overlays/dev-us-east-1
+  destination:
+    server: https://kubernetes.default.svc   # replace with the dev-us-east-1 cluster URL when wired to a real fleet
+    namespace: ommerce-my-new-service-dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ommerce-my-new-service-qa-us-east-1
+  namespace: argocd
+  labels:
+    service: ommerce-my-new-service
+    product: ommerce-my-new-service
+    env: qa
+    region: us-east-1
+    managed-by: backstage-scaffolder
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/priyankaajbhagatt-collab/argocd-apps.git
+    targetRevision: HEAD
+    path: services/ommerce-my-new-service/overlays/qa-us-east-1
+  destination:
+    server: https://kubernetes.default.svc   # replace with the qa-us-east-1 cluster URL when wired to a real fleet
+    namespace: ommerce-my-new-service-qa
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ommerce-my-new-service-uat-us-east-1
+  namespace: argocd
+  labels:
+    service: ommerce-my-new-service
+    product: ommerce-my-new-service
+    env: uat
+    region: us-east-1
+    managed-by: backstage-scaffolder
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/priyankaajbhagatt-collab/argocd-apps.git
+    targetRevision: HEAD
+    path: services/ommerce-my-new-service/overlays/uat-us-east-1
+  destination:
+    server: https://kubernetes.default.svc   # replace with the uat-us-east-1 cluster URL when wired to a real fleet
+    namespace: ommerce-my-new-service-uat
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ommerce-my-new-service-prod-us-east-1
+  namespace: argocd
+  labels:
+    service: ommerce-my-new-service
+    product: ommerce-my-new-service
+    env: prod
+    region: us-east-1
+    managed-by: backstage-scaffolder
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/priyankaajbhagatt-collab/argocd-apps.git
+    targetRevision: HEAD
+    path: services/ommerce-my-new-service/overlays/prod-us-east-1
+  destination:
+    server: https://kubernetes.default.svc   # replace with the prod-us-east-1 cluster URL when wired to a real fleet
+    namespace: ommerce-my-new-service-prod
+  syncPolicy:
+    # Prod is manual-sync — CodePipeline triggers `argocd app sync` only after
+    # the ManualApprovalAction completes upstream.
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
