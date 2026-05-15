@@ -1,0 +1,124 @@
+# ArgoCD Applications for v6commerce-cart-app-service — one per env × region.
+#
+# Generated at scaffold time. This file is opened as a PR against the GitOps
+# repo (priyankaajbhagatt-collab/argocd-apps) — the parent ApplicationSet in ArgoCD watches
+# that path and creates child Applications on merge.
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: v6commerce-cart-app-service-dev-us-east-1
+  namespace: argocd
+  labels:
+    service: v6commerce-cart-app-service
+    product: commerce-cart
+    env: dev
+    region: us-east-1
+    managed-by: backstage-scaffolder
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/priyankaajbhagatt-collab/argocd-apps.git
+    targetRevision: HEAD
+    path: services/v6commerce-cart-app-service/overlays/dev-us-east-1
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: v6commerce-cart-app-service-dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: v6commerce-cart-app-service-qa-us-east-1
+  namespace: argocd
+  labels:
+    service: v6commerce-cart-app-service
+    product: commerce-cart
+    env: qa
+    region: us-east-1
+    managed-by: backstage-scaffolder
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/priyankaajbhagatt-collab/argocd-apps.git
+    targetRevision: HEAD
+    path: services/v6commerce-cart-app-service/overlays/qa-us-east-1
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: v6commerce-cart-app-service-qa
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: v6commerce-cart-app-service-uat-us-east-1
+  namespace: argocd
+  labels:
+    service: v6commerce-cart-app-service
+    product: commerce-cart
+    env: uat
+    region: us-east-1
+    managed-by: backstage-scaffolder
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/priyankaajbhagatt-collab/argocd-apps.git
+    targetRevision: HEAD
+    path: services/v6commerce-cart-app-service/overlays/uat-us-east-1
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: v6commerce-cart-app-service-uat
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: v6commerce-cart-app-service-prod-us-east-1
+  namespace: argocd
+  labels:
+    service: v6commerce-cart-app-service
+    product: commerce-cart
+    env: prod
+    region: us-east-1
+    managed-by: backstage-scaffolder
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/priyankaajbhagatt-collab/argocd-apps.git
+    targetRevision: HEAD
+    path: services/v6commerce-cart-app-service/overlays/prod-us-east-1
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: v6commerce-cart-app-service-prod
+  syncPolicy:
+    # Prod is manual-sync — CodePipeline triggers `argocd app sync` only after
+    # the ManualApprovalAction completes upstream.
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
