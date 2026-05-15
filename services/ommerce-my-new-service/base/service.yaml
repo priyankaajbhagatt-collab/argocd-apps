@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ommerce-my-new-service
+spec:
+  type: ClusterIP
+  selector:
+    app: ommerce-my-new-service
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
