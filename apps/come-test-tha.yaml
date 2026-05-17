@@ -1,0 +1,30 @@
+# ArgoCD Application: come-test-tha
+# Deployed by backstage-onboarded app-of-apps (watches apps/ directory).
+# Namespace created automatically via CreateNamespace=true.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: come-test-tha
+  namespace: argocd
+  labels:
+    service: come-test
+    market: tha
+    managed-by: backstage-scaffolder
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/priyankaajbhagatt-collab/argocd-apps.git
+    targetRevision: HEAD
+    path: services/come-test/overlays/tha
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: come-test-tha
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
