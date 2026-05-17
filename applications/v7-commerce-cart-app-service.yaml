@@ -1,19 +1,21 @@
-# ArgoCD Applications for v7-commerce-cart-app-service — one per env × region.
+# ArgoCD Applications for v7-commerce-cart-app-service — one per market.
 #
 # Generated at scaffold time. This file is opened as a PR against the GitOps
 # repo (priyankaajbhagatt-collab/argocd-apps) — the parent ApplicationSet in ArgoCD watches
 # that path and creates child Applications on merge.
+#
+# Each application deploys to namespace `{service}-{market}` on the cluster.
+# CreateNamespace=true means ArgoCD creates the namespace on first sync.
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: v7-commerce-cart-app-service-dev-us-east-1
+  name: v7-commerce-cart-app-service-mys
   namespace: argocd
   labels:
     service: v7-commerce-cart-app-service
     product: commerce-cart
-    env: dev
-    region: us-east-1
+    market: mys
     managed-by: backstage-scaffolder
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -22,10 +24,10 @@ spec:
   source:
     repoURL: https://github.com/priyankaajbhagatt-collab/argocd-apps.git
     targetRevision: HEAD
-    path: services/v7-commerce-cart-app-service/overlays/dev-us-east-1
+    path: services/v7-commerce-cart-app-service/overlays/mys
   destination:
     server: https://kubernetes.default.svc
-    namespace: v7-commerce-cart-app-service-dev
+    namespace: v7-commerce-cart-app-service-mys
   syncPolicy:
     automated:
       prune: true
@@ -37,13 +39,12 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: v7-commerce-cart-app-service-qa-us-east-1
+  name: v7-commerce-cart-app-service-tw
   namespace: argocd
   labels:
     service: v7-commerce-cart-app-service
     product: commerce-cart
-    env: qa
-    region: us-east-1
+    market: tw
     managed-by: backstage-scaffolder
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -52,10 +53,10 @@ spec:
   source:
     repoURL: https://github.com/priyankaajbhagatt-collab/argocd-apps.git
     targetRevision: HEAD
-    path: services/v7-commerce-cart-app-service/overlays/qa-us-east-1
+    path: services/v7-commerce-cart-app-service/overlays/tw
   destination:
     server: https://kubernetes.default.svc
-    namespace: v7-commerce-cart-app-service-qa
+    namespace: v7-commerce-cart-app-service-tw
   syncPolicy:
     automated:
       prune: true
@@ -67,13 +68,12 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: v7-commerce-cart-app-service-uat-us-east-1
+  name: v7-commerce-cart-app-service-sg
   namespace: argocd
   labels:
     service: v7-commerce-cart-app-service
     product: commerce-cart
-    env: uat
-    region: us-east-1
+    market: sg
     managed-by: backstage-scaffolder
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -82,43 +82,14 @@ spec:
   source:
     repoURL: https://github.com/priyankaajbhagatt-collab/argocd-apps.git
     targetRevision: HEAD
-    path: services/v7-commerce-cart-app-service/overlays/uat-us-east-1
+    path: services/v7-commerce-cart-app-service/overlays/sg
   destination:
     server: https://kubernetes.default.svc
-    namespace: v7-commerce-cart-app-service-uat
+    namespace: v7-commerce-cart-app-service-sg
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ApplyOutOfSyncOnly=true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: v7-commerce-cart-app-service-prod-us-east-1
-  namespace: argocd
-  labels:
-    service: v7-commerce-cart-app-service
-    product: commerce-cart
-    env: prod
-    region: us-east-1
-    managed-by: backstage-scaffolder
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  project: default
-  source:
-    repoURL: https://github.com/priyankaajbhagatt-collab/argocd-apps.git
-    targetRevision: HEAD
-    path: services/v7-commerce-cart-app-service/overlays/prod-us-east-1
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: v7-commerce-cart-app-service-prod
-  syncPolicy:
-    # Prod is manual-sync — CodePipeline triggers `argocd app sync` only after
-    # the ManualApprovalAction completes upstream.
     syncOptions:
       - CreateNamespace=true
       - ApplyOutOfSyncOnly=true
