@@ -1,0 +1,30 @@
+# ArgoCD Application: v7-commerce-cart-app-service-mys
+# Deployed by backstage-onboarded app-of-apps (watches apps/ directory).
+# Namespace created automatically via CreateNamespace=true.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: v7-commerce-cart-app-service-mys
+  namespace: argocd
+  labels:
+    service: v7-commerce-cart-app-service
+    market: mys
+    managed-by: backstage-scaffolder
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/priyankaajbhagatt-collab/argocd-apps.git
+    targetRevision: HEAD
+    path: services/v7-commerce-cart-app-service/overlays/mys
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: v7-commerce-cart-app-service-mys
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
