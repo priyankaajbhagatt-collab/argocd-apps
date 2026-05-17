@@ -1,0 +1,30 @@
+# ArgoCD Application: v6commerce-cart-app-service-can
+# Deployed by backstage-onboarded app-of-apps (watches apps/ directory).
+# Namespace created automatically via CreateNamespace=true.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: v6commerce-cart-app-service-can
+  namespace: argocd
+  labels:
+    service: v6commerce-cart-app-service
+    market: can
+    managed-by: backstage-scaffolder
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/priyankaajbhagatt-collab/argocd-apps.git
+    targetRevision: HEAD
+    path: services/v6commerce-cart-app-service/overlays/can
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: v6commerce-cart-app-service-can
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
