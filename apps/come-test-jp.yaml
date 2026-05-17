@@ -1,0 +1,30 @@
+# ArgoCD Application: come-test-jp
+# Deployed by backstage-onboarded app-of-apps (watches apps/ directory).
+# Namespace created automatically via CreateNamespace=true.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: come-test-jp
+  namespace: argocd
+  labels:
+    service: come-test
+    market: jp
+    managed-by: backstage-scaffolder
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/priyankaajbhagatt-collab/argocd-apps.git
+    targetRevision: HEAD
+    path: services/come-test/overlays/jp
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: come-test-jp
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
